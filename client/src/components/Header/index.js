@@ -45,6 +45,8 @@ const Header = ({ socket, userId, setUserId }) => {
     <>
       <Card
         sx={{
+          position: "fixed",
+          top: 0,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -58,7 +60,7 @@ const Header = ({ socket, userId, setUserId }) => {
           <LinkItem to="/" label="Home" />
         </Box>
         <Box sx={{ display: "flex" }}>
-          <LinkItem to="/bakers" label="Bakers" />
+          <LinkItem to="/rankings" label="Rankings" />
           <LinkItem to="/bets" label="Bets" />
           <LinkItem to="/episodes" label="Episodes" />
           <LinkItem to="/admin" label="Admin" />

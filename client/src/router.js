@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 
 import Home from "containers/Home";
-import Bakers from "containers/Bakers";
+import Rankings from "containers/Rankings";
 import Bets from "containers/Bets";
 import Episodes from "containers/Episodes";
 import Admin from "containers/Admin";
@@ -18,8 +18,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/bakers",
-        element: <Bakers />,
+        path: "/rankings",
+        element: <Rankings />,
       },
       {
         path: "/bets",
