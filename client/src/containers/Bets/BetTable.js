@@ -29,15 +29,16 @@ const Bets = () => {
   return (
     <div className={`betTable ${styles}`}>
       {mockData?.map((bet) => {
+        console.log(bet);
         return (
           <div key={bet.id} className="betCard">
             <div>{bet.description}</div>
             <div>{bet.better.firstName}</div>
-            <div>{bet.better.odds}</div>
-            <div>{bet.better.maxWin}</div>
+            <div>{bet.odds}</div>
+            <div>£{bet.maxLose}</div>
             <div className="eligibleUsers">
               {bet.eligibleUsers.map((user) => {
-                return <div>{user.firstName}</div>;
+                return <div>{user.firstName} - £125</div>;
               })}
             </div>
             <Button variant="contained">Accept Bet</Button>
