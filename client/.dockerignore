@@ -1,0 +1,39 @@
+# Ignore node_modules folder as we will install dependencies inside the container
+node_modules
+
+# Ignore development-specific files and directories
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.DS_Store
+.env
+
+# Ignore build output and development-related files
+/build
+/.next
+/.cache
+/.idea
+/.vscode
+.npmrc
+.npmignore
+
+# Ignore testing files and directories
+/coverage
+/jest
+
+# Ignore version control files and directories
+.git
+.gitignore
+
+# Ignore Docker-specific files
+Dockerfile
+.dockerignore
+.dockerignore.template
+
+# Ignore other temporary or build-specific files
+*.log
+*.zip
+*.gz
+*.tar
+*.tgz
+*.swp
