@@ -28,12 +28,12 @@ const Header = ({ socket, userId, setUserId }) => {
   //   fetchRooms();
   // }, [socket]);
 
-  const login = () => {
-    const userId = uuidv4();
+  // const login = () => {
+  //   const userId = uuidv4();
 
-    Cookies.setItem("userId", userId);
-    navigate("/");
-  };
+  //   Cookies.setItem("userId", userId);
+  //   navigate("/");
+  // };
 
   const logout = () => {
     setUserId(null);
@@ -54,6 +54,7 @@ const Header = ({ socket, userId, setUserId }) => {
           backgroundColor: "#1B7B9F",
           borderRadius: "0px",
           height: "60px",
+          zIndex: 1000,
         }}
       >
         <Box>

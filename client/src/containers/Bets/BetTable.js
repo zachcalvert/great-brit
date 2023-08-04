@@ -29,7 +29,6 @@ const Bets = () => {
   return (
     <div className={`betTable ${styles}`}>
       {mockData?.map((bet) => {
-        console.log(bet);
         return (
           <div key={bet.id} className="betCard">
             <div>{bet.description}</div>
