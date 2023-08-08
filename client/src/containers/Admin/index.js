@@ -8,14 +8,14 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const Episodes = () => {
+const Admin = () => {
   const [active, setActive] = useState(1);
 
   const mockEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const mockEvents = [
     {
       id: 1,
-      description: "<person> got cake batter on his pants.",
+      description: "John will get cake batter on his pants.",
       time: "00:00:00",
       player: {
         id: 1,
@@ -26,7 +26,7 @@ const Episodes = () => {
     },
     {
       id: 2,
-      description: "<person> got cake batter on his pants.",
+      description: "John will get cake batter on his pants.",
       time: "00:00:00",
       player: {
         id: 1,
@@ -37,7 +37,7 @@ const Episodes = () => {
     },
     {
       id: 3,
-      description: "<person> got cake batter on his pants.",
+      description: "John will get cake batter on his pants.",
       time: "00:00:00",
       player: {
         id: 1,
@@ -127,4 +127,4 @@ const Episodes = () => {
   );
 };
 
-export default Episodes;
+export default Admin;

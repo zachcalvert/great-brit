@@ -2,9 +2,10 @@ import React from "react";
 import Cookies from "js-cookies";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Typography, Box } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import LinkItem from "./LinkItem";
 import ChatWidget from "components/ChatWidget";
+import Tent from "components/icons/Tent";
 
 const Header = ({ socket, userId, setUserId }) => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const Header = ({ socket, userId, setUserId }) => {
         }}
       >
         <Box>
-          <LinkItem to="/" label="Home" />
+          <LinkItem to="/" label={<Tent />} />
         </Box>
         <Box sx={{ display: "flex" }}>
           <LinkItem to="/rankings" label="Rankings" />

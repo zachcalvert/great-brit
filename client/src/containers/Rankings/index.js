@@ -35,7 +35,6 @@ const reorder = (list, startIndex, endIndex) => {
 const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
   userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
@@ -44,16 +43,12 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   alignItems: "center",
   fontSize: "24px",
   color: "var(--dark-blue)",
-  fontweight: "bold",
-  // change background colour if dragging
-  background: isDragging ? "lightgreen" : "var(--manilla)",
+  background: isDragging ? "var(--manilla-dark)" : "var(--manilla)",
   boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.08)",
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
-  // background: isDraggingOver ? "lightblue" : "white",
   padding: grid,
   margin: "0 auto",
   marginTop: "160px",
