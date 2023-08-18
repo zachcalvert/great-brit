@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { sessionSelector } from "store";
+import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "store/sessionSlice";
 import { registerUser } from "store/usersSlice";
 import Input from "@mui/material/Input";
@@ -24,6 +25,7 @@ const LoginBox = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const session = useSelector(sessionSelector);
 
   const handleRegister = async () => {
     dispatch(registerUser({ email, password, firstName, lastName }));
@@ -34,6 +36,12 @@ const LoginBox = () => {
   const handleLogin = async () => {
     dispatch(loginUser({ email, password }));
   };
+
+  useEffect(() => {
+    if (session.sessionToken) {
+      navigate("/");
+    }
+  }, [session]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const inputProps = {
     type: "text",

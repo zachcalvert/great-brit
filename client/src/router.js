@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, Route } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import App from "./App";
 import { sessionSelector } from "store";
 import { useSelector } from "react-redux";

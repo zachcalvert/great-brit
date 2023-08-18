@@ -40,8 +40,8 @@ const Header = ({ socket }) => {
   // };
 
   const logout = () => {
+    navigate("/login");
     dispatch(logoutUser());
-    navigate("/");
   };
 
   return (

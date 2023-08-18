@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import { useSelector, useDispatch } from "react-redux";
+import { sessionSelector } from "store";
 import { fetchUsers } from "store/usersSlice";
 import { usersSelector } from "store";
 
@@ -11,6 +12,7 @@ import * as S from "./styles";
 
 const ChatWidget = ({ socket }) => {
   const dispatch = useDispatch();
+  const session = useSelector(sessionSelector);
 
   const users = useSelector(usersSelector);
   const [rooms, setRooms] = useState([]);
@@ -62,17 +64,19 @@ const ChatWidget = ({ socket }) => {
         </S.Window>
       )}
 
-      <S.Widget expanded={expanded}>
-        <S.WidgetHeader onClick={handleExpand}>Messaging</S.WidgetHeader>
-        <S.Box>
-          {users?.map((user) => (
-            <S.Card onClick={() => handleChatStart(user)} key={user._id}>
-              <S.Circle>x</S.Circle>
-              {user.firstName} {user.lastName}
-            </S.Card>
-          ))}
-        </S.Box>
-      </S.Widget>
+      {session.sessionToken && (
+        <S.Widget expanded={expanded}>
+          <S.WidgetHeader onClick={handleExpand}>Messaging</S.WidgetHeader>
+          <S.Box>
+            {users?.map((user) => (
+              <S.Card onClick={() => handleChatStart(user)} key={user._id}>
+                <S.Circle>x</S.Circle>
+                {user.firstName} {user.lastName}
+              </S.Card>
+            ))}
+          </S.Box>
+        </S.Widget>
+      )}
     </S.Container>
   );
 };
