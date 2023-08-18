@@ -63,12 +63,14 @@ const Header = ({ socket }) => {
         <Box>
           <LinkItem to="/" label={<Tent />} />
         </Box>
-        <Box sx={{ display: "flex" }}>
-          <LinkItem to="/rankings" label="Rankings" />
-          <LinkItem to="/bets" label="Bets" />
-          <LinkItem to="/episodes" label="Episodes" />
-          <LinkItem to="/admin" label="Admin" />
-        </Box>
+        {session.sessionToken && (
+          <Box sx={{ display: "flex" }}>
+            <LinkItem to="/rankings" label="Rankings" />
+            <LinkItem to="/bets" label="Bets" />
+            <LinkItem to="/episodes" label="Episodes" />
+            <LinkItem to="/admin" label="Admin" />
+          </Box>
+        )}
         <Box>
           {session.sessionToken ? (
             <Button variant="text" onClick={logout}>

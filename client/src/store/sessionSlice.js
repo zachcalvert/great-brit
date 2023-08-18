@@ -33,7 +33,6 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("session/logoutUser", async () => {
-  console.log("test");
   await fetch("/api/logout");
 });
 

@@ -1,5 +1,7 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate, Route } from "react-router-dom";
 import App from "./App";
+import { sessionSelector } from "store";
+import { useSelector } from "react-redux";
 
 import Home from "containers/Home";
 import Rankings from "containers/Rankings";
@@ -8,6 +10,16 @@ import Episodes from "containers/Episodes";
 import Admin from "containers/Admin";
 import Login from "containers/Login";
 
+const ProtectedRoute = ({ element, ...rest }) => {
+  const session = useSelector(sessionSelector);
+
+  if (!session.sessionToken) {
+    return <Navigate to="/login" />;
+  }
+
+  return element;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -15,23 +27,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <ProtectedRoute element={<Home />} />,
       },
       {
         path: "/rankings",
-        element: <Rankings />,
+        element: <ProtectedRoute element={<Rankings />} />,
       },
       {
         path: "/bets",
-        element: <Bets />,
+        element: <ProtectedRoute element={<Bets />} />,
       },
       {
         path: "/episodes",
-        element: <Episodes />,
+        element: <ProtectedRoute element={<Episodes />} />,
       },
       {
         path: "/admin",
-        element: <Admin />,
+        element: <ProtectedRoute element={<Admin />} />,
       },
       {
         path: "/login",
