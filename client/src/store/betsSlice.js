@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import Bets from "containers/Bets";
 
 export const betsSelector = (state) => state.bets.list;
 
@@ -7,7 +6,6 @@ const initialState = {
   list: [],
 };
 
-// Async action creator using createAsyncThunk to fetch bets
 export const fetchBets = createAsyncThunk("bets/fetchBets", async () => {
   const res = await fetch("http://localhost:4000/bets");
   const data = await res.json();
@@ -15,7 +13,6 @@ export const fetchBets = createAsyncThunk("bets/fetchBets", async () => {
   return data.bets;
 });
 
-// Async action creator using createAsyncThunk to create a new bet
 export const createBet = createAsyncThunk(
   "bets/createBet",
   async (betData, { getState }) => {
@@ -30,8 +27,13 @@ export const createBet = createAsyncThunk(
       },
       body: JSON.stringify(betData),
     });
-    const data = await res.json();
 
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message);
+    }
+
+    const data = await res.json();
     return data.bet;
   }
 );

@@ -5,12 +5,16 @@ const { Schema } = mongoose;
 const sessionSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User", // Reference the User model for association
+    ref: "User",
   },
-  token: String, // You can store a session token or any identifier here
+  token: String,
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  expiresAt: {
+    type: Date,
+    default: () => Date.now() + 1000 * 60 * 60 * 24 * 7, // 1 week
   },
 });
 

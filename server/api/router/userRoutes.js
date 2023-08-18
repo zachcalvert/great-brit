@@ -64,7 +64,11 @@ const userRoutes = (router) => {
       await session.save();
 
       // Respond with user data and session token
-      res.json({ user, sessionToken: session.token });
+      res.json({
+        user,
+        sessionToken: session.token,
+        expiresAt: session.expiresAt,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });

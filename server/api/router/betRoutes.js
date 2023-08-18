@@ -2,6 +2,7 @@ import Bet from "../../models/Bets.js";
 import { v4 as uuidv4 } from "uuid";
 import User from "../../models/User.js";
 import Session from "../../models/Session.js";
+import { authenticateUser } from "./authMiddleware.js";
 
 const betRoutes = (router) => {
   router.get("/bets", async (req, res) => {
@@ -14,7 +15,7 @@ const betRoutes = (router) => {
     }
   });
 
-  router.post("/bets", async (req, res) => {
+  router.post("/bets", authenticateUser, async (req, res) => {
     const { description, odds, maxLose, eligibleUsers } = req.body;
 
     const sessionToken = req.headers.authorization.split(" ")[1];

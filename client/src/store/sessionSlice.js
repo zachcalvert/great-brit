@@ -22,15 +22,15 @@ export const loginUser = createAsyncThunk(
       const data = await response.json();
 
       if (response.ok) {
-        const state = getState();
-        const { socket } = state.socket;
+        // const state = getState();
+        // const { socket } = state.socket;
 
-        if (socket) {
-          socket.emit("new-room-created", {
-            roomId: data.sessionToken,
-            userId: data.user.id,
-          });
-        }
+        // if (socket) {
+        //   socket.emit("new-room-created", {
+        //     roomId: data.sessionToken,
+        //     userId: data.user.id,
+        //   });
+        // }
         return data;
       } else {
         throw new Error(data.message);
@@ -58,6 +58,7 @@ export const sessionSlice = createSlice({
       state.user = action.payload.user;
       state.sessionToken = action.payload.sessionToken;
       state.loading = false;
+      state.expiresAt = action.payload.expiresAt;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.loading = false;
