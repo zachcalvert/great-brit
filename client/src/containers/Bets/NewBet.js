@@ -1,63 +1,37 @@
-import React from "react";
-import { css } from "@emotion/css";
-import { Button, TextField } from "@mui/material";
-// import Popover from "@mui/material/Popover";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, TextField, MenuItem, Select, Chip } from "@mui/material";
+import { createBet } from "store/betsSlice"; // Adjust the import path as needed
+import { usersSelector } from "store"; // Adjust the import path as needed
+
+import { styles } from "./styles";
 
 const Bets = () => {
-  const styles = css`
-    width: 60%;
-    margin: 0 auto;
-    margin-top: 120px;
-    padding: 30px;
-    background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
+  const dispatch = useDispatch();
+  const users = useSelector(usersSelector);
+  const [description, setDescription] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedOdds, setSelectedOdds] = useState([1, 1]);
+  const [maxLose, setMaxLose] = useState("");
 
-    .top {
-      height: 50px;
+  const maxWin =
+    parseFloat(maxLose) *
+    (parseFloat(selectedOdds[1]) / parseFloat(selectedOdds[0]));
 
-      .title {
-        color: var(--dark-blue);
-        font-size: 24px;
-        font-weight: 800;
-      }
-    }
+  const handleUserChange = (event) => {
+    setSelectedUsers(event.target.value);
+  };
 
-    .bottom {
-      display: flex;
-      justify-content: space-between;
-
-      .left {
-        margin-right: 12px;
-      }
-
-      .center {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-
-        margin-right: 12px;
-      }
-
-      .right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-      }
-
-      .label {
-        font-size: 14px;
-        font-weight: 800;
-        color: var(--black);
-      }
-
-      .formItem {
-        margin-bottom: 40px;
-        display: flex;
-        flex-direction: column;
-      }
-    }
-  `;
+  const handleSubmit = () => {
+    const betData = {
+      description,
+      odds: parseFloat(selectedOdds),
+      maxLose: parseFloat(maxLose),
+      eligibleUsers: selectedUsers,
+      maxWin,
+    };
+    dispatch(createBet(betData));
+  };
 
   return (
     <div className={`myClass ${styles}`}>
@@ -66,18 +40,81 @@ const Bets = () => {
       </div>
       <div className="bottom">
         <div className="left">
-          <TextField label="Description" multiline maxRows={4} />
+          <TextField
+            label="Description"
+            multiline
+            maxRows={4}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </div>
         <div className="center">
-          <div className="formItem">
-            <TextField id="standard-basic" label="Odds" variant="outlined" />
-          </div>
-          <div className="formItem">
+          <div className="formItem oddsContainer">
             <TextField
-              id="standard-basic"
-              label="Who Can Accept?"
+              select
+              label="Odds"
+              value={selectedOdds[0]}
+              onChange={(e) =>
+                setSelectedOdds((prev) => [e.target.value, prev[1]])
+              }
               variant="outlined"
-            />
+              sx={{ width: "40%" }}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((odds) => (
+                <MenuItem key={odds} value={odds}>
+                  {odds}
+                </MenuItem>
+              ))}
+            </TextField>
+            to
+            <TextField
+              select
+              value={selectedOdds[1]}
+              onChange={(e) =>
+                setSelectedOdds((prev) => [prev[0], e.target.value])
+              }
+              variant="outlined"
+              sx={{ width: "40%" }}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((odds) => (
+                <MenuItem key={odds} value={odds}>
+                  {odds}
+                </MenuItem>
+              ))}
+            </TextField>
+          </div>
+          <div className="formItem usersContainer">
+            <Select
+              multiple
+              value={selectedUsers}
+              onChange={handleUserChange}
+              renderValue={(selected) => (
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    width: "100%",
+                  }}
+                >
+                  {selected.map((userId) => {
+                    const user = users.find((user) => user._id === userId);
+                    return (
+                      <Chip
+                        key={userId}
+                        label={`${user.firstName} ${user.lastName}`}
+                        sx={{ margin: "2px" }}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            >
+              {users.map((user) => (
+                <MenuItem key={user._id} value={user._id}>
+                  {`${user.firstName} ${user.lastName}`}
+                </MenuItem>
+              ))}
+            </Select>
           </div>
         </div>
         <div className="right">
@@ -86,6 +123,8 @@ const Bets = () => {
               id="standard-basic"
               label="Max You'll Lose"
               variant="outlined"
+              value={maxLose}
+              onChange={(e) => setMaxLose(e.target.value)}
             />
           </div>
           <div className="formItem">
@@ -93,10 +132,14 @@ const Bets = () => {
               id="standard-basic"
               label="Max You'll Win"
               variant="outlined"
+              value={maxLose ? maxWin : ""}
+              disabled
             />
           </div>
           <div className="submit">
-            <Button variant="contained">Submit</Button>
+            <Button variant="contained" onClick={handleSubmit}>
+              Submit
+            </Button>
           </div>
         </div>
       </div>

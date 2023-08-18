@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import usersReducer from "./usersSlice";
 import socketReducer from "./socketSlice";
 import sessionSlice from "./sessionSlice";
+import betsSlice from "./betsSlice";
 import thunk from "redux-thunk";
 
 export const usersSelector = (state) => state.users.list;
@@ -21,6 +22,7 @@ const persistedReducer = persistReducer(
     users: usersReducer,
     socket: socketReducer,
     session: sessionSlice,
+    bets: betsSlice,
   })
 );
 

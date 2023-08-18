@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { initializeSocket } from "./store/socketSlice";
+// import { initializeSocket } from "./store/socketSlice";
 
 import Header from "./components/Header";
 import "./App.css";
@@ -11,13 +11,13 @@ function App() {
   const dispatch = useDispatch();
   const socket = useSelector((state) => state.socket.socket);
 
-  useEffect(() => {
-    dispatch(initializeSocket());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // useEffect(() => {
+  //   dispatch(initializeSocket());
+  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      <Header />
+      <Header socket={socket} />
       <Outlet context={{ socket }} />
     </>
   );

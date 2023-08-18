@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { sessionSelector } from "store";
 import { css } from "@emotion/css";
 import { Button } from "@mui/material";
-import { mockData } from "./mockData";
+// import { mockData } from "./mockData";
+import { fetchBets } from "store/betsSlice";
+import { betsSelector } from "store/betsSlice";
 
 const Bets = () => {
+  const dispatch = useDispatch();
+  const bets = useSelector(betsSelector);
+  const { user: sessionUser } = useSelector(sessionSelector);
+
   const styles = css`
     display: flex;
     flex-direction: column;
@@ -26,9 +34,23 @@ const Bets = () => {
     }
   `;
 
+  useEffect(() => {
+    dispatch(fetchBets());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const acceptButton = (bet) => {
+    if (sessionUser?.id === bet.better.id) {
+      return <Button variant="contained">Your Bet</Button>;
+    } else if (bet.eligibleUsers?.find((user) => user.id === sessionUser?.id)) {
+      <Button variant="contained">Accept Bet</Button>;
+    } else {
+      return <Button variant="contained">Not Eligible</Button>;
+    }
+  };
+
   return (
     <div className={`betTable ${styles}`}>
-      {mockData?.map((bet) => {
+      {bets?.map((bet) => {
         return (
           <div key={bet.id} className="betCard">
             <div>{bet.description}</div>
@@ -36,11 +58,11 @@ const Bets = () => {
             <div>{bet.odds}</div>
             <div>£{bet.maxLose}</div>
             <div className="eligibleUsers">
-              {bet.eligibleUsers.map((user) => {
+              {bet.eligibleUsers?.map((user) => {
                 return <div>{user.firstName} - £125</div>;
               })}
             </div>
-            <Button variant="contained">Accept Bet</Button>
+            {acceptButton(bet)}
           </div>
         );
       })}

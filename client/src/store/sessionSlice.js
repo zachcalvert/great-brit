@@ -9,7 +9,7 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   "session/loginUser",
-  async (credentials) => {
+  async (credentials, { getState }) => {
     try {
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
@@ -22,6 +22,15 @@ export const loginUser = createAsyncThunk(
       const data = await response.json();
 
       if (response.ok) {
+        const state = getState();
+        const { socket } = state.socket;
+
+        if (socket) {
+          socket.emit("new-room-created", {
+            roomId: data.sessionToken,
+            userId: data.user.id,
+          });
+        }
         return data;
       } else {
         throw new Error(data.message);

@@ -3,7 +3,6 @@ import io from "socket.io-client";
 
 const initialState = {
   socket: null,
-  messages: [], // Example array to store received messages
 };
 
 export const initializeSocket = createAsyncThunk(
@@ -11,7 +10,7 @@ export const initializeSocket = createAsyncThunk(
   async (_, { dispatch }) => {
     const socket = io("http://localhost:4000");
 
-    socket.on("message", (message) => {
+    socket.io.on("new-room-created-from-server", (message) => {
       dispatch(receiveMessage(message));
     });
 

@@ -10,7 +10,7 @@ import Episodes from "containers/Episodes";
 import Admin from "containers/Admin";
 import Login from "containers/Login";
 
-const ProtectedRoute = ({ element, ...rest }) => {
+const ProtectedRoute = ({ element }) => {
   const session = useSelector(sessionSelector);
 
   if (!session.sessionToken) {

@@ -7,6 +7,7 @@ export default class RoomController extends BaseController {
   };
 
   newRoomCreated = ({ roomId, userId }) => {
+    console.log("new room: ", roomId, userId);
     const room = new Room({ roomId: roomId, name: "harbor", userId });
     room.save();
 
