@@ -1,16 +1,19 @@
 import React from "react";
-import Cookies from "js-cookies";
 import { Link, useNavigate } from "react-router-dom";
+import { sessionSelector } from "store";
+import { useSelector, useDispatch } from "react-redux";
+import { getInitials } from "helpers/getInitials";
 import { Button, Card, Typography, Box } from "@mui/material";
-// import { v4 as uuidv4 } from "uuid";
+import { logoutUser } from "store/sessionSlice";
 import LinkItem from "./LinkItem";
 import ChatWidget from "components/ChatWidget";
 import Tent from "components/icons/Tent";
+import { styles } from "./styles";
 
-const Header = ({ socket, userId, setUserId }) => {
+const Header = ({ socket }) => {
   const navigate = useNavigate();
-
-  // const [rooms, setRooms] = useState([]);
+  const session = useSelector(sessionSelector);
+  const dispatch = useDispatch();
 
   // const createNewRoom = () => {
   //   const roomId = uuidv4();
@@ -37,13 +40,12 @@ const Header = ({ socket, userId, setUserId }) => {
   // };
 
   const logout = () => {
-    setUserId(null);
-    Cookies.removeItem("userId");
+    dispatch(logoutUser());
     navigate("/");
   };
 
   return (
-    <>
+    <div className={styles}>
       <Card
         sx={{
           position: "fixed",
@@ -68,9 +70,11 @@ const Header = ({ socket, userId, setUserId }) => {
           <LinkItem to="/admin" label="Admin" />
         </Box>
         <Box>
-          {userId ? (
+          {session.sessionToken ? (
             <Button variant="text" onClick={logout}>
-              <Typography sx={{ color: "white" }}>Logout</Typography>
+              <div className="logout">
+                {getInitials(session.user.firstName, session.user.lastName)}
+              </div>
             </Button>
           ) : (
             <Link to={"/login"}>
@@ -82,20 +86,8 @@ const Header = ({ socket, userId, setUserId }) => {
         </Box>
       </Card>
       <ChatWidget socket={socket} />
-    </>
+    </div>
   );
 };
 
 export default Header;
-
-// {
-//   rooms.map((room) => {
-//     return (
-//       <Link to={`/room/${room.roomId}`} key={room.id}>
-//         <Button variant="text">
-//           <Typography sx={{ color: "white" }}>{room.name}</Typography>
-//         </Button>
-//       </Link>
-//     );
-//   });
-// }

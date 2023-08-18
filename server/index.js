@@ -1,4 +1,5 @@
 import express from "express";
+import listEndpoints from "express-list-endpoints";
 import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -40,3 +41,6 @@ io.on("connection", sockets);
 httpServer.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+const routes = listEndpoints(app);
+console.log(routes);

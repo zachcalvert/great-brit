@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { initializeSocket } from "./store/socketSlice";
+
 import Header from "./components/Header";
-import Cookies from "js-cookies";
 import "./App.css";
 
 function App() {
-  const [socket, setSocket] = useState(null);
-  const [userId, setUserId] = useState(false);
+  const dispatch = useDispatch();
+  const socket = useSelector((state) => state.socket.socket);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
-    const _userId = Cookies.getItem("userId");
-    if (_userId) setUserId(_userId);
-  }, []);
+    dispatch(initializeSocket());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
-      <Header socket={socket} userId={userId} setUserId={setUserId} />
+      <Header />
       <Outlet context={{ socket }} />
     </>
   );

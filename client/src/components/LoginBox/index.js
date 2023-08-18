@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "store/sessionSlice";
+import { registerUser } from "store/usersSlice";
 import Input from "@mui/material/Input";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -19,30 +22,17 @@ const LoginBox = () => {
   const [snackOpen, setSnackOpen] = useState("");
   const [isLogin, setIsLogin] = useState(true);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password, firstName, lastName }),
-    };
+    dispatch(registerUser({ email, password, firstName, lastName }));
 
-    fetch("http://localhost:4000/users", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        navigate("/");
-      })
-      .catch((error) => {
-        setSnackOpen(true);
-        console.warn("Error:", error); // eslint-disable-line no-console
-      });
+    navigate("/");
   };
 
   const handleLogin = async () => {
-    // console.log("login");
+    dispatch(loginUser({ email, password }));
   };
 
   const inputProps = {

@@ -21,8 +21,8 @@ const Tent = () => {
           fill="white"
         />
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M24 12H2V23H6C6 23 8.41967 21.5741 10.3057 19.1296C12.1917 16.6852 13 13.8333 13 13.8333C13 13.8333 13.5388 16.2778 15.6943 19.1296C17.8497 21.9815 20 23 20 23H24V12Z"
           fill="white"
         />
