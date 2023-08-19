@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import ReactDOM from "react-dom";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-// fake data generator
-const getItems = () => {
-  const mockBakers = [
-    "Darius",
-    "Derek",
-    "Dennis",
-    "Dylan",
-    "Dustin",
-    "Dwayne",
-    "Dwight",
-    "Earl",
-    "Eddie",
-    "Edgar",
-  ];
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchRankings,
+  postRankings,
+  rankingsSelector,
+} from "store/rankingsSlice";
+import { getItemStyle, getListStyle } from "./styles";
 
-  return mockBakers.map((baker, idx) => ({
-    id: `item-${baker}`,
-    content: `${baker}`,
+// fake data generator
+const formatItems = (items) => {
+  return items.map((item) => ({
+    id: item._id,
+    content: `${item.starId.firstName} ${item.starId.lastName}`,
+    payload: item,
   }));
 };
 
@@ -32,33 +28,30 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-  height: "40px",
-  display: "flex",
-  alignItems: "center",
-  fontSize: "24px",
-  color: "var(--dark-blue)",
-  background: isDragging ? "var(--manilla-dark)" : "var(--manilla)",
-  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.08)",
-  ...draggableStyle,
-});
-
-const getListStyle = (isDraggingOver) => ({
-  padding: grid,
-  margin: "0 auto",
-  marginTop: "160px",
-  width: "50%",
-});
-
 const Rankings = () => {
+  const dispatch = useDispatch();
+  const rankings = useSelector(rankingsSelector);
+
   const [state, setState] = useState({
-    items: getItems(),
+    items: [],
   });
+
+  useEffect(() => {
+    dispatch(fetchRankings());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (rankings) {
+      setState({
+        items: formatItems(rankings),
+      });
+    }
+  }, [rankings]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleSubmit = (submittedItems) => {
+    const out = submittedItems.map((si) => si.payload);
+    dispatch(postRankings(out));
+  };
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -75,6 +68,8 @@ const Rankings = () => {
     setState({
       items,
     });
+
+    handleSubmit(items);
   };
 
   return (

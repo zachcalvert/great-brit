@@ -17,6 +17,7 @@ const app = express();
 const PORT = 4000;
 
 app.use(express.json());
+app.use(cors());
 
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
@@ -27,8 +28,6 @@ const io = new Server(httpServer, {
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-app.use(cors());
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");

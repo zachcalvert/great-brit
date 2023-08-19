@@ -1,22 +1,22 @@
-import Bet from "../../models/Bet.js";
+import Star from "../../models/Star.js";
 import { v4 as uuidv4 } from "uuid";
 import User from "../../models/User.js";
 import Session from "../../models/Session.js";
 import { authenticateUser } from "./authMiddleware.js";
 
-const betRoutes = (router) => {
-  router.get("/bets", authenticateUser, async (req, res) => {
+const starRoutes = (router) => {
+  router.get("/stars", authenticateUser, async (req, res) => {
     try {
-      const bets = await Bet.find();
-      res.json({ bets });
+      const stars = await Star.find();
+      res.json({ stars });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
 
-  router.post("/bets", authenticateUser, async (req, res) => {
-    const { description, odds, maxLose, eligibleUsers } = req.body;
+  router.post("/stars", authenticateUser, async (req, res) => {
+    const { firstName, lastName, bio } = req.body;
 
     const sessionToken = req.headers.authorization.split(" ")[1];
 
@@ -28,24 +28,15 @@ const betRoutes = (router) => {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const userPromises = eligibleUsers.map(async (userId) => {
-        const user = await User.findOne({ _id: userId });
-        return user ? user.toObject() : null;
-      });
-
-      const users = await Promise.all(userPromises);
-
-      const newBet = new Bet({
+      const newStar = new Star({
         id: uuidv4(),
-        description,
-        odds,
-        better: sessionUser,
-        maxLose,
-        eligibleUsers: users,
+        firstName,
+        lastName,
+        bio,
       });
 
-      const savedBet = await newBet.save();
-      res.status(201).json({ bet: savedBet });
+      const savedStar = await newStar.save();
+      res.status(201).json({ star: savedStar });
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
@@ -55,4 +46,4 @@ const betRoutes = (router) => {
   return router;
 };
 
-export default betRoutes;
+export default starRoutes;

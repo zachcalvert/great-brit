@@ -1,38 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { makeRequest } from "../helpers/makeRequest";
 
 const initialState = {
   list: [],
 };
 
-// Async action creator using createAsyncThunk
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const res = await fetch("http://localhost:4000/users");
-  const data = await res.json();
+  const data = await makeRequest.get("/users");
   return data.users;
 });
 
 export const registerUser = createAsyncThunk(
   "session/registerUser",
-  async (userData) => {
-    try {
-      const response = await fetch("http://localhost:4000/users", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
+  async (userData, { getState }) => {
+    const state = getState();
+    const { sessionToken } = state.session;
 
-      const data = await response.json();
+    const data = await makeRequest.post("/users", userData, sessionToken);
 
-      if (response.ok) {
-        return data;
-      } else {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return data;
   }
 );
 

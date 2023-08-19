@@ -7,49 +7,15 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { mockEpisodes, mockEvents } from "./mockData";
+import Stars from "./Stars";
 
 const Admin = () => {
   const [active, setActive] = useState(1);
 
-  const mockEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const mockEvents = [
-    {
-      id: 1,
-      description: "John will get cake batter on his pants.",
-      time: "00:00:00",
-      player: {
-        id: 1,
-        firstName: "Ben",
-        lastName: "Kiggen",
-      },
-      baseAmount: 3,
-    },
-    {
-      id: 2,
-      description: "John will get cake batter on his pants.",
-      time: "00:00:00",
-      player: {
-        id: 1,
-        firstName: "Ben",
-        lastName: "Kiggen",
-      },
-      baseAmount: 3,
-    },
-    {
-      id: 3,
-      description: "John will get cake batter on his pants.",
-      time: "00:00:00",
-      player: {
-        id: 1,
-        firstName: "Ben",
-        lastName: "Kiggen",
-      },
-      baseAmount: 3,
-    },
-  ];
-
   return (
     <div className={`episodes ${styles}`}>
+      <Stars />
       <div className="folder">
         <div className="tabs">
           {mockEpisodes.map((episode) => {

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { makeRequest } from "../helpers/makeRequest";
 
 export const betsSelector = (state) => state.bets.list;
 
@@ -7,36 +8,16 @@ const initialState = {
 };
 
 export const fetchBets = createAsyncThunk("bets/fetchBets", async () => {
-  const res = await fetch("http://localhost:4000/bets");
-  const data = await res.json();
+  const data = await makeRequest.get("/bets");
 
   return data.bets;
 });
 
-export const createBet = createAsyncThunk(
-  "bets/createBet",
-  async (betData, { getState }) => {
-    const state = getState();
-    const { sessionToken } = state.session;
+export const createBet = createAsyncThunk("bets/createBet", async (betData) => {
+  const data = await makeRequest.post("/bets", betData);
 
-    const res = await fetch("http://localhost:4000/bets", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionToken}`,
-      },
-      body: JSON.stringify(betData),
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message);
-    }
-
-    const data = await res.json();
-    return data.bet;
-  }
-);
+  return data.bet;
+});
 
 export const betsSlice = createSlice({
   name: "bets",

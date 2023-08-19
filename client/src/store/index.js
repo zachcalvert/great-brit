@@ -5,7 +5,9 @@ import usersReducer from "./usersSlice";
 import socketReducer from "./socketSlice";
 import sessionSlice from "./sessionSlice";
 import betsSlice from "./betsSlice";
+import starsSlice from "./starsSlice";
 import thunk from "redux-thunk";
+import rankingsSlice from "./rankingsSlice";
 
 export const usersSelector = (state) => state.users.list;
 export const sessionSelector = (state) => state.session;
@@ -23,14 +25,16 @@ const persistedReducer = persistReducer(
     socket: socketReducer,
     session: sessionSlice,
     bets: betsSlice,
+    stars: starsSlice,
+    rankings: rankingsSlice,
   })
 );
 
 const store = configureStore({
-  reducer: persistedReducer, // Use the persisted reducer
+  reducer: persistedReducer,
   middleware: [thunk],
 });
 
-const persistor = persistStore(store); // Create the persistor
+const persistor = persistStore(store);
 
-export { store, persistor }; // Export both the store and persistor
+export { store, persistor };
