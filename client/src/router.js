@@ -20,6 +20,10 @@ const ProtectedRoute = ({ element }) => {
   return element;
 };
 
+const FallbackRoute = () => {
+  return <Navigate to="/" />;
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "*",
+        element: <FallbackRoute />,
       },
     ],
   },

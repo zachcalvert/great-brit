@@ -64,7 +64,7 @@ const ChatWidget = ({ socket }) => {
         </S.Window>
       )}
 
-      {session.sessionToken && (
+      {/* {session.sessionToken && (
         <S.Widget expanded={expanded}>
           <S.WidgetHeader onClick={handleExpand}>Messaging</S.WidgetHeader>
           <S.Box>
@@ -76,7 +76,7 @@ const ChatWidget = ({ socket }) => {
             ))}
           </S.Box>
         </S.Widget>
-      )}
+      )} */}
     </S.Container>
   );
 };

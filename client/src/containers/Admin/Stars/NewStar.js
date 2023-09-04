@@ -15,6 +15,9 @@ const NewStar = () => {
   const handleSubmit = () => {
     const starData = { firstName, lastName, bio };
     dispatch(createStar(starData));
+    setFirstName("");
+    setLastName("");
+    setBio("");
   };
 
   return (

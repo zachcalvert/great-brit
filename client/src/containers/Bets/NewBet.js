@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField, MenuItem, Select, Chip } from "@mui/material";
-import { createBet } from "store/betsSlice"; // Adjust the import path as needed
-import { usersSelector } from "store"; // Adjust the import path as needed
+import { createBet } from "store/betsSlice";
+import { fetchUsers } from "store/usersSlice";
+import { usersSelector } from "store";
 
 import { styles } from "./styles";
 
@@ -31,7 +32,15 @@ const Bets = () => {
       maxWin,
     };
     dispatch(createBet(betData));
+    setDescription("");
+    setSelectedUsers([]);
+    setSelectedOdds([1, 1]);
+    setMaxLose("");
   };
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={`myClass ${styles}`}>

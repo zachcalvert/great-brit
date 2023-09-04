@@ -49,7 +49,9 @@ const Rankings = () => {
   }, [rankings]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSubmit = (submittedItems) => {
-    const out = submittedItems.map((si) => si.payload);
+    const out = submittedItems.map((si, idx) => {
+      return { ...si.payload, rank: idx + 1 };
+    });
     dispatch(postRankings(out));
   };
 
