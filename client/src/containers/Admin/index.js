@@ -1,35 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, TextField } from "@mui/material";
 import { styles } from "./styles";
-
-import { mockEpisodes } from "./mockData";
+import { fetchEpisodes, createEpisode } from "store/episodesSlice";
 import AdminEvents from "./AdminEvents";
-import Stars from "./Stars";
 
 const Admin = () => {
-  const [active, setActive] = useState(1);
+  const dispatch = useDispatch();
+  const episodes = useSelector((state) => state.episodes.list);
+
+  const [active, setActive] = useState(null);
+  const [newEpisodeNumber, setNewEpisodeNumber] = useState("");
+
+  const handleTabClick = (episodeId) => {
+    setActive(episodeId);
+  };
+
+  const handleCreateEpisode = () => {
+    dispatch(createEpisode({ number: newEpisodeNumber }));
+    setNewEpisodeNumber("");
+  };
+
+  useEffect(() => {
+    dispatch(fetchEpisodes());
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={`episodes ${styles}`}>
-      <Stars />
+      <div className="createForm">
+        <TextField
+          label="New Episode Number"
+          variant="outlined"
+          value={newEpisodeNumber}
+          onChange={(e) => setNewEpisodeNumber(e.target.value)}
+          sx={{ marginRight: "12px" }}
+        />
+        <Button variant="outlined" onClick={handleCreateEpisode}>
+          Create Episode
+        </Button>
+      </div>
       <div className="folder">
         <div className="tabs">
-          {mockEpisodes.map((episode) => {
-            const tabClass = episode === active ? "tab active" : "tab inactive";
+          {episodes.map((episode) => {
+            const tabClass =
+              episode._id === active?._id ? "tab active" : "tab inactive";
 
             return (
               <div
-                key={episode}
+                key={episode._id}
                 className={tabClass}
-                onClick={() => setActive(episode)}
+                onClick={() => handleTabClick(episode)}
               >
-                {episode}
+                {episode.number}
               </div>
             );
           })}
         </div>
         <div className="main">
-          <h1>Episode {active}</h1>
-          <AdminEvents />
+          <h1>Episode {active?.number}</h1>
+          {active && <AdminEvents episodeId={active?._id} />}
         </div>
       </div>
     </div>

@@ -12,6 +12,11 @@ const eventSchema = new mongoose.Schema({
     ref: "Star",
     required: false,
   },
+  episode: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Episode",
+    required: false,
+  },
 });
 
 export default mongoose.model("Event", eventSchema);

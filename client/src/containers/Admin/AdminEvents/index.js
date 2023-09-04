@@ -4,9 +4,9 @@ import { Button, TextField, Select, MenuItem } from "@mui/material";
 import { createEvent } from "store/eventsSlice";
 import { styles } from "./styles";
 import { fetchStars, starsSelector } from "store/starsSlice";
-import { fetchEvents, eventsSelector } from "store/eventsSlice";
+import { fetchEventsByEpisode, eventsSelector } from "store/eventsSlice";
 
-const AdminEvents = () => {
+const AdminEvents = ({ episodeId }) => {
   const dispatch = useDispatch();
   const stars = useSelector(starsSelector);
   const events = useSelector(eventsSelector);
@@ -20,8 +20,11 @@ const AdminEvents = () => {
 
   useEffect(() => {
     dispatch(fetchStars());
-    dispatch(fetchEvents());
-  }, [dispatch]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    dispatch(fetchEventsByEpisode(episodeId));
+  }, [episodeId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +42,7 @@ const AdminEvents = () => {
       time: formData.time,
       baseAmount: formData.baseAmount,
       starId: formData.starId,
+      episodeId,
     };
 
     dispatch(createEvent(eventData));

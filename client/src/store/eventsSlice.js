@@ -13,11 +13,22 @@ export const fetchEvents = createAsyncThunk("events/fetchEvents", async () => {
   return data.events;
 });
 
-export const createEvent = createAsyncThunk(
-  "events/createEvent",
-  async (eventData) => {
-    const data = await makeRequest.post("/events", eventData);
+export const fetchEventsByEpisode = createAsyncThunk(
+  "events/fetchEvents",
+  async (episodeId) => {
+    const data = await makeRequest.get(`/episodes/${episodeId}/events`);
 
+    return data.events;
+  }
+);
+
+export const createEvent = createAsyncThunk(
+  "episodes/createEvent",
+  async (eventData) => {
+    const data = await makeRequest.post(
+      `/episodes/${eventData.episodeId}/events`,
+      eventData
+    );
     return data.event;
   }
 );

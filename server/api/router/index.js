@@ -5,6 +5,7 @@ import betRoutes from "./betRoutes.js";
 import starRoutes from "./starRoutes.js";
 import rankingRoutes from "./rankingRoutes.js";
 import eventRoutes from "./eventRoutes.js";
+import episodeRoutes from "./episodeRoutes.js";
 
 let router = new Router();
 
@@ -14,5 +15,6 @@ router = userRoutes(router);
 router = betRoutes(router);
 router = starRoutes(router);
 router = rankingRoutes(router);
+router = episodeRoutes(router);
 
 export default router;

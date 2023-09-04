@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Event from "../../models/Event.js";
+import Episode from "../../models/Episode.js"; // Import Episode model
 import { v4 as uuidv4 } from "uuid";
-// import User from "../../models/User.js";
 import Star from "../../models/Star.js";
 import Session from "../../models/Session.js";
 import { authenticateUser } from "./authMiddleware.js";
@@ -19,7 +19,7 @@ const eventRoutes = (router) => {
   });
 
   router.post("/events", authenticateUser, async (req, res) => {
-    const { description, time, baseAmount, starId } = req.body;
+    const { description, time, baseAmount, starId, episodeId } = req.body; // Add episodeId to request body
     const sessionToken = req.headers.authorization.split(" ")[1];
     const stars = await Star.find({}, "_id");
 
@@ -48,6 +48,17 @@ const eventRoutes = (router) => {
       });
 
       const savedEvent = await newEvent.save();
+
+      // Add the event to the associated episode
+      if (episodeId) {
+        const episode = await Episode.findOne({ _id: episodeId });
+
+        if (episode) {
+          episode.events.push(savedEvent._id);
+          await episode.save();
+        }
+      }
+
       const out = await savedEvent.populate("star");
       res.status(201).json({ event: out });
     } catch (error) {

@@ -4,11 +4,22 @@ export const styles = css`
   width: 100%;
   margin-top: 160px;
   padding-bottom: 160px;
+  width: 70%;
+  margin: 0 auto;
+  margin-top: 160px;
+
+  .createForm {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 4px;
+    padding: 24px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+  }
 
   .folder {
     background-color: var(--manilla);
-    width: 70%;
-    margin: 0 auto;
     border-radius: 0 4px 4px 0;
     min-height: 900px;
     display: flex;
