@@ -17,7 +17,7 @@ const Episodes = () => {
       id: 1,
       description: "<person> got cake batter on his pants.",
       time: "00:00:00",
-      player: {
+      star: {
         id: 1,
         firstName: "Ben",
         lastName: "Kiggen",
@@ -28,7 +28,7 @@ const Episodes = () => {
       id: 2,
       description: "<person> got cake batter on his pants.",
       time: "00:00:00",
-      player: {
+      star: {
         id: 1,
         firstName: "Ben",
         lastName: "Kiggen",
@@ -39,7 +39,7 @@ const Episodes = () => {
       id: 3,
       description: "<person> got cake batter on his pants.",
       time: "00:00:00",
-      player: {
+      star: {
         id: 1,
         firstName: "Ben",
         lastName: "Kiggen",
@@ -114,7 +114,7 @@ const Episodes = () => {
                       <div>{event.description}</div>
                       <div>{event.time}</div>
                       <div>{event.baseAmount}</div>
-                      <div>{event.player.firstName}</div>
+                      <div>{event.star.firstName}</div>
                     </div>
                   );
                 })}

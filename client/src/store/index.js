@@ -5,6 +5,7 @@ import usersReducer from "./usersSlice";
 import socketReducer from "./socketSlice";
 import sessionSlice from "./sessionSlice";
 import betsSlice from "./betsSlice";
+import eventsSlice from "./eventsSlice";
 import starsSlice from "./starsSlice";
 import thunk from "redux-thunk";
 import rankingsSlice from "./rankingsSlice";
@@ -25,6 +26,7 @@ const persistedReducer = persistReducer(
     socket: socketReducer,
     session: sessionSlice,
     bets: betsSlice,
+    events: eventsSlice,
     stars: starsSlice,
     rankings: rankingsSlice,
   })

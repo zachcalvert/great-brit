@@ -168,7 +168,7 @@ export const mockEvents = [
     id: 1,
     description: "John will get cake batter on his pants.",
     time: "00:00:00",
-    player: {
+    star: {
       id: 1,
       firstName: "Ben",
       lastName: "Kiggen",
@@ -179,7 +179,7 @@ export const mockEvents = [
     id: 2,
     description: "John will get cake batter on his pants.",
     time: "00:00:00",
-    player: {
+    star: {
       id: 1,
       firstName: "Ben",
       lastName: "Kiggen",
@@ -190,7 +190,7 @@ export const mockEvents = [
     id: 3,
     description: "John will get cake batter on his pants.",
     time: "00:00:00",
-    player: {
+    star: {
       id: 1,
       firstName: "Ben",
       lastName: "Kiggen",
