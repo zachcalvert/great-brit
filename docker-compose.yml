@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     build:
       context: ./client
+      dockerfile: ./deploy/client/Dockerfile
     ports:
       - 3000:3000
     volumes:
@@ -16,6 +17,7 @@ services:
     restart: unless-stopped
     build:
       context: ./server
+      dockerfile: ./deploy/server/Dockerfile
     volumes:
       - ./server:/app
       - /app/node_modules
