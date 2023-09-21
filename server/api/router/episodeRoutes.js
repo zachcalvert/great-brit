@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import Episode from "../../models/Episode.js";
 import Event from "../../models/Event.js";
+import Bet from "../../models/Bet.js";
 // import { v4 as uuidv4 } from "uuid";
 import { authenticateUser } from "./authMiddleware.js";
 
 const episodeRoutes = (router) => {
   // Get all episodes
-  router.get("/episodes", authenticateUser, async (req, res) => {
+  router.get("/episodes", async (req, res) => {
     try {
       const episodes = await Episode.find();
       res.json({ episodes });
@@ -17,7 +18,7 @@ const episodeRoutes = (router) => {
   });
 
   // Create a new episode
-  router.post("/episodes", authenticateUser, async (req, res) => {
+  router.post("/episodes", async (req, res) => {
     const { number, hasAired } = req.body;
 
     try {
@@ -37,7 +38,7 @@ const episodeRoutes = (router) => {
   // Get all events for a specific episode
   router.get(
     "/episodes/:episodeId/events",
-    authenticateUser,
+
     async (req, res) => {
       const { episodeId } = req.params;
 
@@ -54,10 +55,28 @@ const episodeRoutes = (router) => {
     }
   );
 
+  // Get all bets for a specific episode
+  router.get(
+    "/episodes/:episodeId/bets",
+
+    async (req, res) => {
+      const { episodeId } = req.params;
+
+      try {
+        const bets = await Bet.find({ episode: episodeId });
+
+        res.json({ bets });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+      }
+    }
+  );
+
   // Create a new event for a specific episode
   router.post(
     "/episodes/:episodeId/events",
-    authenticateUser,
+
     async (req, res) => {
       const { episodeId } = req.params;
       const { description, time, baseAmount, starId } = req.body;
@@ -77,7 +96,6 @@ const episodeRoutes = (router) => {
           star: starId,
           episode: episodeId,
         });
-        console.log("🚀 ~ file: episodeRoutes.js:80 ~ newEvent:", newEvent);
 
         const savedEvent = await newEvent.save();
         res.status(201).json({ event: savedEvent });

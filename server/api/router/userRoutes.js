@@ -1,7 +1,7 @@
 import User from "../../models/User.js";
 import Session from "../../models/Session.js";
 import { v4 as uuidv4 } from "uuid";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const userRoutes = (router) => {
   router.get("/users", async (req, res) => {
@@ -63,7 +63,6 @@ const userRoutes = (router) => {
       });
       await session.save();
 
-      // Respond with user data and session token
       res.json({
         user,
         sessionToken: session.token,
@@ -79,7 +78,6 @@ const userRoutes = (router) => {
     const { sessionToken } = req.body;
 
     try {
-      // Find and remove the session entry based on the provided token
       const deletedSession = await Session.findOneAndDelete({
         token: sessionToken,
       });

@@ -4,7 +4,7 @@ import Session from "../../models/Session.js";
 import { authenticateUser } from "./authMiddleware.js";
 
 const rankingsRoutes = (router) => {
-  router.get("/rankings", authenticateUser, async (req, res) => {
+  router.get("/rankings", async (req, res) => {
     try {
       const sessionToken = req.headers.authorization.split(" ")[1];
       const session = await Session.findOne({ token: sessionToken });
@@ -17,36 +17,75 @@ const rankingsRoutes = (router) => {
         .populate("starId") // Populate the related Star data
         .sort({ rank: 1 }); // Sort the rankings by rank
 
-      if (userRankings.length === 0) {
-        // Populate userRankings if it's empty
-        const stars = await Star.find();
+      const stars = await Star.find();
 
-        // Create and save default rankings for each star
-        userRankings = await Promise.all(
-          stars.map(async (star, index) => {
-            const newRanking = new Ranking({
-              userId: session.userId,
-              starId: star._id,
-              rank: index + 1,
-            });
-            return newRanking.save();
-          })
+      if (userRankings.length !== stars.length) {
+        // Get the user's current rankings
+        const userRankings = await Ranking.find({
+          userId: session.userId,
+        }).populate("starId");
+
+        // Get the IDs of stars that the user has ranked
+        const rankedStarIds = userRankings
+          .map((ranking) => ranking.starId?._id?.toString()) // Use optional chaining to handle null values
+          .filter((id) => id !== null); // Remove null values
+
+        // Identify the stars that were added and removed
+        const starsToAdd = stars.filter(
+          (star) => !rankedStarIds.includes(star._id.toString())
         );
 
-        // Populate the starId field in the userRankings array
-        userRankings = await Ranking.find({ userId: session.userId })
+        const starsToRemove = userRankings.filter((ranking) => {
+          if (!ranking.starId) {
+            return true; // Remove if starId is null or undefined
+          }
+
+          const rankingStarId = ranking.starId._id?.toString(); // Handle null or undefined _id
+          return (
+            !rankingStarId ||
+            !stars.some((star) => star._id.toString() === rankingStarId)
+          );
+        });
+
+        // Remove rankings for stars that no longer exist
+        const removePromises = starsToRemove.map((ranking) =>
+          Ranking.findByIdAndRemove(ranking._id)
+        );
+
+        // Create new rankings for stars that were added
+        const newRankings = starsToAdd.map((star, index) => {
+          return new Ranking({
+            userId: session.userId,
+            starId: star._id,
+            rank: userRankings.length + index + 1, // Add new rankings at the end
+          });
+        });
+
+        // Use Promise.all to remove old rankings and create new ones
+        await Promise.all([
+          ...removePromises,
+          ...newRankings.map((ranking) => ranking.save()),
+        ]);
+
+        // Fetch the updated user rankings
+        const updatedUserRankings = await Ranking.find({
+          userId: session.userId,
+        })
           .populate("starId")
           .sort({ rank: 1 });
-      }
 
-      res.json({ rankings: userRankings });
+        // Return the updated rankings
+        res.json({ rankings: updatedUserRankings });
+      } else {
+        res.json({ rankings: userRankings });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Internal server error" });
     }
   });
 
-  router.post("/rankings", authenticateUser, async (req, res) => {
+  router.post("/rankings", async (req, res) => {
     const sessionToken = req.headers.authorization.split(" ")[1];
     const { rankings } = req.body;
 

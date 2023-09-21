@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import Event from "../../models/Event.js";
 import Episode from "../../models/Episode.js"; // Import Episode model
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import Star from "../../models/Star.js";
 import Session from "../../models/Session.js";
 import { authenticateUser } from "./authMiddleware.js";
 
 const eventRoutes = (router) => {
-  router.get("/events", authenticateUser, async (req, res) => {
+  router.get("/events", async (req, res) => {
     try {
       const events = await Event.find().populate("star");
 
@@ -18,10 +18,10 @@ const eventRoutes = (router) => {
     }
   });
 
-  router.post("/events", authenticateUser, async (req, res) => {
-    const { description, time, baseAmount, starId, episodeId } = req.body; // Add episodeId to request body
+  router.post("/events", async (req, res) => {
+    const { description, time, baseAmount, starId, episodeId } = req.body;
     const sessionToken = req.headers.authorization.split(" ")[1];
-    const stars = await Star.find({}, "_id");
+    // const stars = await Star.find({}, "_id");
 
     try {
       const session = await Session.findOne({ token: sessionToken });
