@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEpisodes } from "store/episodesSlice";
+import React from "react";
+import { useSelector } from "react-redux";
 
-import AdminEvents from "components/Events";
+import Events from "components/Events";
+import BetTable from "containers/Bets/BetTable";
 
-const Admin = ({ active, setActive }) => {
+const EpisodeList = ({ active, setActive }) => {
   const episodes = useSelector((state) => state.episodes.list);
 
   const handleTabClick = (episodeId) => {
@@ -31,10 +31,16 @@ const Admin = ({ active, setActive }) => {
       </div>
       <div className="main">
         <h1>Episode {active?.number}</h1>
-        {active && <AdminEvents episodeId={active?._id} />}
+        {active && (
+          <>
+            <Events episodeId={active?._id} />
+            <div style={{ height: "100px" }} /> <h2>Bets:</h2>
+            <BetTable episodeId={active?._id} />
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-export default Admin;
+export default EpisodeList;

@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, TextField } from "@mui/material";
 import { styles } from "./styles";
 import { fetchEpisodes, createEpisode } from "store/episodesSlice";
-import AdminEvents from "../../components/Events";
+import Events from "../../components/Events";
+import BetTable from "containers/Bets/BetTable";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,14 @@ const Admin = () => {
         </div>
         <div className="main">
           <h1>Episode {active?.number}</h1>
-          {active && <AdminEvents episodeId={active?._id} />}
+          {active && (
+            <>
+              <Events episodeId={active?._id} />
+              <div style={{ height: "100px" }} />
+              <h2>Bets:</h2>
+              <BetTable episodeId={active?._id} />
+            </>
+          )}
         </div>
       </div>
     </div>

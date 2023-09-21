@@ -13,6 +13,15 @@ export const fetchBets = createAsyncThunk("bets/fetchBets", async () => {
   return data.bets;
 });
 
+export const fetchBetsByEpisode = createAsyncThunk(
+  "bets/fetchBetsByEpisode",
+  async (episodeId) => {
+    const data = await makeRequest.get(`/episodes/${episodeId}/bets`);
+
+    return data.bets;
+  }
+);
+
 export const createBet = createAsyncThunk("bets/createBet", async (betData) => {
   const data = await makeRequest.post("/bets", betData);
 
@@ -25,6 +34,9 @@ export const betsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchBets.fulfilled, (state, action) => {
+      state.list = action.payload;
+    });
+    builder.addCase(fetchBetsByEpisode.fulfilled, (state, action) => {
       state.list = action.payload;
     });
     builder.addCase(createBet.fulfilled, (state, action) => {

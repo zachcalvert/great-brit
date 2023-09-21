@@ -4,7 +4,7 @@ export const fetchFromApi = async (url, method, body) => {
   const state = store.getState();
   const { sessionToken } = state.session;
 
-  const res = await fetch(`http://localhost:4000${url}`, {
+  const res = await fetch(`http://server:4000${url}`, {
     method,
     headers: {
       "Content-Type": "application/json",
@@ -25,6 +25,6 @@ export const fetchFromApi = async (url, method, body) => {
 export const makeRequest = {
   get: async (url) => fetchFromApi(url, "GET"),
   post: async (url, body) => fetchFromApi(url, "POST", body),
-  patch: async (url, body) => fetchFromApi(url, "PATCH", body),
+  put: async (url, body) => fetchFromApi(url, "PUT", body),
   delete: async (url, body) => fetchFromApi(url, "DELETE", body),
 };

@@ -22,6 +22,20 @@ export const createStar = createAsyncThunk(
   }
 );
 
+// Add the new async thunks for delete and sendHome
+export const deleteStar = createAsyncThunk("stars/deleteStar", async (id) => {
+  await makeRequest.delete(`/stars/${id}`);
+  return id;
+});
+
+export const sendHomeStar = createAsyncThunk(
+  "stars/sendHomeStar",
+  async (id) => {
+    const data = await makeRequest.put(`/stars/sendHome/${id}`);
+    return data.star;
+  }
+);
+
 export const starsSlice = createSlice({
   name: "stars",
   initialState,
@@ -32,6 +46,16 @@ export const starsSlice = createSlice({
     });
     builder.addCase(createStar.fulfilled, (state, action) => {
       state.list.push(action.payload);
+    });
+
+    // Add reducers for delete and sendHome actions
+    builder.addCase(deleteStar.fulfilled, (state, action) => {
+      state.list = state.list.filter((star) => star._id !== action.payload);
+    });
+    builder.addCase(sendHomeStar.fulfilled, (state, action) => {
+      state.list = state.list.map((star) =>
+        star.id === action.payload.id ? action.payload : star
+      );
     });
   },
 });

@@ -1,12 +1,14 @@
 import { css } from "@emotion/css";
 
 export const styles = css`
-  width: 100%;
-  margin-top: 160px;
   padding-bottom: 160px;
-  width: 70%;
+  width: 80%;
   margin: 0 auto;
-  margin-top: 160px;
+  margin-top: 120px;
+
+  .tabBox {
+    margin-top: 40px;
+  }
 
   .createForm {
     display: flex;

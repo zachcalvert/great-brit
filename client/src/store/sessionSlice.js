@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { makeRequest } from "helpers/makeRequest";
 
 const initialState = {
   user: null,
@@ -9,15 +10,9 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   "session/loginUser",
-  async (credentials, { getState }) => {
+  async (credentials) => {
     try {
-      const response = await fetch("http://localhost:4000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = makeRequest.post("/login", credentials);
 
       const data = await response.json();
 
@@ -42,7 +37,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const logoutUser = createAsyncThunk("session/logoutUser", async () => {
-  await fetch("/api/logout");
+  await makeRequest.post("/logout");
 });
 
 export const sessionSlice = createSlice({

@@ -7,7 +7,7 @@ import { styles } from "./styles";
 import { fetchStars, starsSelector } from "store/starsSlice";
 import { fetchEventsByEpisode, eventsSelector } from "store/eventsSlice";
 
-const AdminEvents = ({ episodeId }) => {
+const Events = ({ episodeId }) => {
   const dispatch = useDispatch();
   const stars = useSelector(starsSelector);
   const events = useSelector(eventsSelector);
@@ -138,4 +138,4 @@ const AdminEvents = ({ episodeId }) => {
   );
 };
 
-export default AdminEvents;
+export default Events;

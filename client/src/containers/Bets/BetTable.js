@@ -3,11 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { sessionSelector } from "store";
 import { css } from "@emotion/css";
 import { Button } from "@mui/material";
-// import { mockData } from "./mockData";
-import { fetchBets } from "store/betsSlice";
+import { fetchBets, fetchBetsByEpisode } from "store/betsSlice";
 import { betsSelector } from "store/betsSlice";
 
-const Bets = () => {
+const Bets = ({ episodeId }) => {
   const dispatch = useDispatch();
   const bets = useSelector(betsSelector);
   const { user: sessionUser } = useSelector(sessionSelector);
@@ -35,8 +34,12 @@ const Bets = () => {
   `;
 
   useEffect(() => {
-    dispatch(fetchBets());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    if (episodeId) {
+      dispatch(fetchBetsByEpisode(episodeId));
+    } else {
+      dispatch(fetchBets());
+    }
+  }, [episodeId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const acceptButton = (bet) => {
     if (sessionUser?.id === bet.better.id) {
