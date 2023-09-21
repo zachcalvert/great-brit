@@ -16,6 +16,6 @@ COPY . .
 # Build the React app
 RUN npm run build
 
-# Serve the app on port 3000
-EXPOSE 3000
+# Serve the app on port 3001
+EXPOSE 3001
 CMD ["npm", "start"]
