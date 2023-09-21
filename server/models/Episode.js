@@ -9,6 +9,12 @@ const episodeSchema = new mongoose.Schema({
       ref: "Event",
     },
   ],
+  bets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+    },
+  ],
 });
 
 export default mongoose.model("Episode", episodeSchema);

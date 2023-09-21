@@ -9,6 +9,10 @@ const starSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  sentHome: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Star = mongoose.model("Star", starSchema);

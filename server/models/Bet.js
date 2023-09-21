@@ -20,6 +20,11 @@ const betSchema = new mongoose.Schema({
   maxLose: Number,
   eligibleUsers: [eligibleUserSchema],
   acceptedUsers: [eligibleUserSchema],
+  episode: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Episode",
+    required: false,
+  },
 });
 
 export default mongoose.model("Bet", betSchema);

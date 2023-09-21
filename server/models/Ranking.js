@@ -17,6 +17,8 @@ const rankingSchema = new mongoose.Schema({
   },
 });
 
+rankingSchema.index({ userId: 1, starId: 1 }, { unique: true });
+
 const Ranking = mongoose.model("Ranking", rankingSchema);
 
 export default Ranking;
