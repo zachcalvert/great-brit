@@ -2,28 +2,24 @@ version: "3.7"
 
 services:
   client:
-    restart: unless-stopped
     build:
       context: ./client
-      dockerfile: ./deploy/client/Dockerfile
     ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./deploy/nginx:/etc/nginx/conf.d
-      - ./deploy/certbot/conf:/etc/letsencrypt
-      - ./deploy/certbot/www:/var/www/certbot
-    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+      - "3000:3000"
+    networks:
+      - gbb-net
+
   server:
-    restart: unless-stopped
     build:
       context: ./server
-      dockerfile: ./deploy/server/Dockerfile
     volumes:
       - ./server:/app
       - /app/node_modules
     ports:
-      - 4000:4000
+      - "4000:4000"
+    networks:
+      - gbb-net
+
   certbot:
     image: certbot/certbot
     restart: unless-stopped
